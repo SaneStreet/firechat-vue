@@ -1,41 +1,54 @@
 <template>
+  <!-- View for the Login screen -->
   <div class="view login" v-if="state.username === '' || state.username === null">
+    <!-- Form for the login -->
     <form class="login-form" @submit.prevent="Login">
       <div class="form-inner">
         <h1>Login to FireChat</h1>
         <label for="username">Username</label>
+        <!-- Username input field-->
         <input 
           type="text" 
           v-model="inputUsername" 
           placeholder="Please enter username.." />
+        <!-- Username input submit -->
         <input 
           type="submit" 
           value="Login" />
       </div>
     </form>
   </div>
+  <!-- View for the chat -->
   <div class="view chat" v-else>
     <header>
+      <!-- Logout button -->
       <button class="logout" @click="Logout">Logout</button>
       <h1>Welcome, {{ state.username }}</h1>
     </header>
+    <!-- Chatbox section -->
     <section class="chat-box">
+      <!-- Box that contains all the messages -->
       <div 
         v-for="message in state.messages" 
         :key="message.key" 
         :class="(message.username == state.username ? 'message current-user' : 'message')">
         <div class="message-inner">
+          <!-- Container for the username -->
           <div class="username">{{ message.username }}</div>
+          <!-- Container for the content -->
           <div class="content">{{ message.content }}</div>
         </div>
       </div>
     </section>
     <footer>
+      <!-- Form to send messages in the chat -->
       <form @submit.prevent="SendMessage">
+        <!-- Message input field -->
         <input 
           type="text" 
           v-model="inputMessage" 
           placeholder="Write a message..">
+        <!-- Message input submit -->
         <input 
           type="submit" 
           value="Send">
@@ -45,8 +58,9 @@
 </template>
 
 <script>
-import { reactive, onMounted, ref } from 'vue';
-import db from "./db";
+// Imports
+import { reactive, onMounted, ref } from 'vue'; // functions from Vue
+import db from "./db"; // functions connected to db.js
 
 export default {
   // setup function
@@ -99,12 +113,12 @@ export default {
             id: key,
             username: data[key].username,
             content: data[key].content,
-          })
-        })
+          });
+        });
 
         state.messages = messages;
-      })
-    })
+      });
+    });
 
     return {
       inputUsername,
